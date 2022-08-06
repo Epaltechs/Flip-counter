@@ -1,45 +1,29 @@
-function count(digitPrefix) {
-    $(".container").removeClass("play");
-    var activeDigit = $("ul." + digitPrefix + " li.active");
-
-    // If no digit is active
-    if (activeDigit.html() == undefined) {
-        // Activate the first digit for this counter
-        activeDigit = $("ul." + digitPrefix + " li").eq(0);
-        activeDigit.addClass("before").
-        removeClass("active").
-        next("li").
-        addClass("active").
-        closest(".container").
-        addClass("play");
-
-        // If the last digit is active
-    } else if (activeDigit.is(":last-child")) {
-
-        $("ul." + digitPrefix + " li").removeClass("before");
-        activeDigit.addClass("before").removeClass("active");
-        activeDigit = $("ul." + digitPrefix + " li").eq(0);
-        activeDigit.addClass("active").
-        closest(".container").
-        addClass("play");
-
-        // Otherwise, proceed to the next digit
-    } else {
-        $("ul." + digitPrefix + " li").removeClass("before");
-        activeDigit.addClass("before").
-        removeClass("active").
-        next("li").
-        addClass("active").
-        closest(".container").
-        addClass("play");
-    }
-}
-
-setInterval(function () {
-    count('ones');
-}, 1000);
-
-
-setInterval(function () {
-    count('tens');
-}, 10000);
+setInterval(function() {
+    doFlip(3);
+  }, 1000);
+  
+  function doFlip(numberIndex) {
+    
+    var currentNumberElement = $(".number:eq(" + numberIndex + ")");
+    
+    var currentNumber = Number(currentNumberElement.attr("data-number"));    
+  
+    currentNumber--;
+    
+    if (currentNumber < 0) {
+      currentNumber = 9;
+      
+      if (numberIndex > 0) {
+        doFlip(--numberIndex);
+      }
+    } 
+    
+    currentNumberElement.addClass("flip");
+    
+    setTimeout(function() {
+      currentNumberElement.attr("data-number", currentNumber);
+      
+      currentNumberElement.removeClass("flip");
+    }, 500);
+  }
+  
